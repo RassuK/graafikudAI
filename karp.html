@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Karpdiagramm</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <div id="container"></div>
+    <script>
+    const median = arr => {
+        const mid = Math.floor(arr.length / 2),
+        nums = [...arr].sort((a, b) => a - b);
+        return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+    };
+    function Quartile(data, q) {
+  data=Array_Sort_Numbers(data);
+  var pos = ((data.length) - 1) * q;
+  var base = Math.floor(pos);
+  var rest = pos - base;
+  if( (data[base+1]!==undefined) ) {
+    return data[base] + rest * (data[base+1] - data[base]);
+  } else {
+    return data[base];
+  }
+}
+
+function Array_Sort_Numbers(inputarray){
+  return inputarray.sort(function(a, b) {
+    return a - b;
+  });
+}
+    $(document).ready(function(){
+        let maleCount = 0
+        let femaleCount = 0
+        let gender_percentagesMale = []
+        let age_percentagesMale = []
+        let gender_percentagesFemale = []
+        let age_percentagesFemale = []
+    for (let index = 0; index < datalines.length; index++) {
+        if (datalines[index][3] == "Male") {
+            maleCount++
+            age_percentagesMale.push(parseInt(datalines[index][2]))
+            gender_percentagesMale.push(parseInt(datalines[index][4]))
+        } else {
+            femaleCount++
+            age_percentagesFemale.push(parseInt(datalines[index][2]))
+            gender_percentagesFemale.push(parseInt(datalines[index][4]))
+        }
+    }
+    // min, low quart, median, upper quart, max
+    let dataArrayMaleAge = []
+    dataArrayMaleAge[0] = Math.min(...age_percentagesMale)
+    dataArrayMaleAge[1] = Quartile(age_percentagesMale, 0.25)
+    dataArrayMaleAge[2] = median(age_percentagesMale)
+    dataArrayMaleAge[3] = Quartile(age_percentagesMale, 0.75)
+    dataArrayMaleAge[4] = Math.max(...age_percentagesMale)
+
+    let dataArrayMaleGender = []
+    dataArrayMaleGender[0] = Math.min(...gender_percentagesMale)
+    dataArrayMaleGender[1] = Quartile(gender_percentagesMale, 0.25)
+    dataArrayMaleGender[2] = median(gender_percentagesMale)
+    dataArrayMaleGender[3] = Quartile(gender_percentagesMale, 0.75)
+    dataArrayMaleGender[4] = Math.max(...gender_percentagesMale)
+
+    let dataArrayFemaleAge = []
+    dataArrayFemaleAge[0] = Math.min(...age_percentagesFemale)
+    dataArrayFemaleAge[1] = Quartile(age_percentagesFemale, 0.25)
+    dataArrayFemaleAge[2] = median(age_percentagesFemale)
+    dataArrayFemaleAge[3] = Quartile(age_percentagesFemale, 0.75)
+    dataArrayFemaleAge[4] = Math.max(...age_percentagesFemale)
+
+    let dataArrayFemaleGender = []
+    dataArrayFemaleGender[0] = Math.min(...gender_percentagesFemale)
+    dataArrayFemaleGender[1] = Quartile(gender_percentagesFemale, 0.25)
+    dataArrayFemaleGender[2] = median(gender_percentagesFemale)
+    dataArrayFemaleGender[3] = Quartile(gender_percentagesFemale, 0.75)
+    dataArrayFemaleGender[4] = Math.max(...gender_percentagesFemale)
+    
+    
+    Highcharts.chart('container', {
+
+chart: {
+    type: 'boxplot'
+},
+
+title: {
+    text: 'Soo ja vanuse tõenäosuse karpdiagramm'
+},
+
+legend: {
+    enabled: false
+},
+
+xAxis: {
+    categories: ['Meeste vanus %', 'Meeste soo %', 'Naiste vanus %', 'Naiste soo %'],
+    title: {
+        text: 'Experiment No.'
+    }
+},
+
+yAxis: {
+    title: {
+        text: '%'
+    }
+},
+
+series: [{
+    name: 'Observations',
+    data: [
+        dataArrayMaleAge,
+        dataArrayMaleGender,
+        dataArrayFemaleAge,
+        dataArrayFemaleGender
+    ],
+    tooltip: {
+        headerFormat: '<em>Experiment No {point.key}</em><br/>'
+    }
+}, {
+    name: 'Outlier',
+    color: Highcharts.getOptions().colors[0],
+    type: 'scatter',
+    data: [ // x, y positions where 0 is the first category
+        
+    ],
+    marker: {
+        fillColor: 'white',
+        lineWidth: 1,
+        lineColor: Highcharts.getOptions().colors[0]
+    },
+    tooltip: {
+        pointFormat: 'Observation: {point.y}'
+    }
+}]
+
+});
+    })
+    
+    </script>
+</body>
+</html>
