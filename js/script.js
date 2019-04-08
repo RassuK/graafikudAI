@@ -21,9 +21,7 @@ function processData(allText) {
 
     let headers = allTextLines[0].split(';');
     let lines = [];
-    console.log(allTextLines.length)
     for (let i=1; i<allTextLines.length; i++) {
-        console.log('sup')
         let data = allTextLines[i].split(';');
         if (data.length === headers.length) {
             let tarr = [];
@@ -44,10 +42,10 @@ function processData(allText) {
 
             tarr.splice(1, 1);
             lines.push(tarr)
-            console.log(headers)
-            console.log(lines)
+
 
         }
     }
+    console.log(lines)
     return lines;
 }
