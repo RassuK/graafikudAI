@@ -6,14 +6,12 @@ Highcharts.setOptions({
 
 let datalines = null;
 
-$(document).ready(function(){
     $.ajax({
         type: "GET",
         url: "stats.csv",
         dataType: "text",
         success: function(data) {datalines = processData(data);}
     });
-});
 
 function processData(allText) {
     'use strict'
@@ -42,7 +40,6 @@ function processData(allText) {
                 tarr.push(data[j]);
             }
 
-            tarr.splice(1, 1);
             lines.push(tarr)
 
 
