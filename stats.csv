@@ -1,4 +1,4 @@
-age;agepercent;gender;genderpercent
+time;age;agepercent;gender;genderpercent
 2019/03/22 11:27:01;(15, 20);56.1%;Male;99.9%
 2019/03/22 11:38:44;(15, 20);56.9%;Male;100.%
 2019/03/22 11:38:51;(25, 32);95.7%;Male;100.%

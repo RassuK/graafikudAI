@@ -1,18 +1,34 @@
+Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+});
+
+$(document).ready(function(){
+    $.ajax({
+        type: "GET",
+        url: "stats.csv",
+        dataType: "text",
+        success: function(data) {processData(data);}
+    });
+});
+
 function processData(allText) {
+    'use strict'
     // var utcDate = Date.UTC(2005, 1, 1, 0, 0, 0);
     // console.log(utcDate);
     let allTextLines = allText.split(/\r\n|\n/);
-    let headers = allTextLines[0].split(',');
-    let lines = [];
-    let lines2 = [];
 
-    for (let i=0; i<allTextLines.length; i++) {
-        let data = allTextLines[i].split(',');
-        if (data.length == headers.length) {
+    let headers = allTextLines[0].split(';');
+    let lines = [];
+    console.log(allTextLines.length)
+    for (let i=1; i<allTextLines.length; i++) {
+        console.log('sup')
+        let data = allTextLines[i].split(';');
+        if (data.length === headers.length) {
             let tarr = [];
-            let tarr2 = [];
-            for (let j=0; j<headers.length; j++) {
-                if(i>0 && j==0) {
+            for (let j = 0; j < headers.length; j++) {
+                if (i > 0 && j === 0) {
 
                     let dateString = data[0];
                     let dateTimeParts = dateString.split(' '),
@@ -20,20 +36,18 @@ function processData(allText) {
                         dateParts = dateTimeParts[0].split('/'),
                         date;
                     date = new Date(dateParts[0], parseInt(dateParts[1], 10) - 1, dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
-                    data[0]=date.getTime();
+                    data[0] = date.getTime();
                 }
-                //tarr.push(data[j]);
-                tarr.push(parseFloat(data[j]));
-                tarr2.push(parseFloat(data[j]));
+
+                tarr.push(data[j]);
             }
 
-            lines.push(tarr);
-            //console.log(tarr)
-            console.log(tarr2)
-            tarr2.splice(1,1);
-            lines2.push(tarr2)
-            console.log(lines2)
-
+            tarr.splice(1, 1);
+            lines.push(tarr)
+            console.log(headers)
+            console.log(lines)
 
         }
     }
+    return lines;
+}
