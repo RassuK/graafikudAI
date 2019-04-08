@@ -32,20 +32,16 @@
 
         // get all unique dates
         const uniqueDates = [...new Set(dates)];
-        console.log(uniqueDates)
 
         let resultsMale = Array(uniqueDates.length)
-        resultsMale[0]=0
-        resultsMale[1]=0
-        resultsMale[2]=0
-        resultsMale[3]=0
-        resultsMale[4]=0
+        for(let i=0;i<resultsMale.length;i++){
+            resultsMale[i]=0
+        }
+
         let resultsFemale = Array(uniqueDates.length)
-        resultsFemale[0]=0
-        resultsFemale[1]=0
-        resultsFemale[2]=0
-        resultsFemale[3]=0
-        resultsFemale[4]=0
+        for(let i=0;i<resultsFemale.length;i++){
+            resultsFemale[i]=0
+        }
         let dateCheck = moment(datalines[0][0]).format('DD-MM-YYYY');
         let j = 0
         for(i=0; i<datalines.length; i++){
@@ -56,14 +52,14 @@
                 resultsFemale[j] += 1
             }
             if(dateCheck !== moment(datalines[i][0]).format('DD-MM-YYYY') && datalines[i][3] === "Male"){
-                resultsMale[j] += 1
                 dateCheck = moment(datalines[i][0]).format('DD-MM-YYYY');
                 j++
+                resultsMale[j] += 1
             }
             if(dateCheck !== moment(datalines[i][0]).format('DD-MM-YYYY') && datalines[i][3] === "Female"){
-                resultsFemale[j] += 1
                 dateCheck = moment(datalines[i][0]).format('DD-MM-YYYY');
                 j++
+                resultsFemale[j] += 1
             }
 
         }
