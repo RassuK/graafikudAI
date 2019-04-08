@@ -5,15 +5,13 @@ Highcharts.setOptions({
 });
 
 let datalines = null;
-
-$(document).ready(function(){
     $.ajax({
         type: "GET",
         url: "stats.csv",
         dataType: "text",
         success: function(data) {datalines = processData(data);}
     });
-});
+
 
 function processData(allText) {
     'use strict'
@@ -38,14 +36,9 @@ function processData(allText) {
                     date = new Date(dateParts[0], parseInt(dateParts[1], 10) - 1, dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
                     data[0] = date.getTime();
                 }
-
                 tarr.push(data[j]);
             }
-
-            tarr.splice(1, 1);
             lines.push(tarr)
-
-
         }
     }
     console.log(lines)
