@@ -23,7 +23,6 @@ function processData(allText) {
 
     let headers = allTextLines[0].split(';');
     let lines = [];
-    console.log(allTextLines.length)
     for (let i=1; i<allTextLines.length; i++) {
         let data = allTextLines[i].split(';');
         if (data.length === headers.length) {
@@ -45,6 +44,7 @@ function processData(allText) {
 
             tarr.splice(1, 1);
             lines.push(tarr)
+
 
         }
     }
