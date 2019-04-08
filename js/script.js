@@ -4,12 +4,14 @@ Highcharts.setOptions({
         }
 });
 
+let datalines = null;
+
 $(document).ready(function(){
     $.ajax({
         type: "GET",
         url: "stats.csv",
         dataType: "text",
-        success: function(data) {processData(data);}
+        success: function(data) {datalines = processData(data);}
     });
 });
 
@@ -23,7 +25,6 @@ function processData(allText) {
     let lines = [];
     console.log(allTextLines.length)
     for (let i=1; i<allTextLines.length; i++) {
-        console.log('sup')
         let data = allTextLines[i].split(';');
         if (data.length === headers.length) {
             let tarr = [];
@@ -44,10 +45,9 @@ function processData(allText) {
 
             tarr.splice(1, 1);
             lines.push(tarr)
-            console.log(headers)
-            console.log(lines)
 
         }
     }
+    console.log(lines)
     return lines;
 }
