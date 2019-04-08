@@ -5,6 +5,7 @@ Highcharts.setOptions({
 });
 
 let datalines = null;
+
     $.ajax({
         type: "GET",
         url: "stats.csv",
@@ -38,6 +39,7 @@ function processData(allText) {
                 }
                 tarr.push(data[j]);
             }
+
             lines.push(tarr)
         }
     }
