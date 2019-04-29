@@ -19,6 +19,7 @@
     <input type='date' name="datefield2" value="" id="saveDate2"/>
 
     <button onclick="save_date()" type="button">Save</button>
+    <button onclick="clear_date()" type="button">clear date</button>
 
     <script>
         function save_date() {
@@ -26,6 +27,13 @@
             let input2 = document.getElementById("saveDate2").value;
             localStorage.setItem("date1", input1);
             localStorage.setItem("date2", input2);
+        }
+
+        function clear_date() {
+            localStorage.removeItem("date1")
+            localStorage.removeItem("date2")
+            $('#saveDate1').val("")
+            $('#saveDate2').val("")
         }
 
         if (localStorage.getItem("date1") !== null && localStorage.getItem("date2") !== null) {

@@ -28,7 +28,6 @@ function processData(allText) {
             let tarr = [];
             for (let j = 0; j < headers.length; j++) {
                 if (i > 0 && j === 0) {
-
                     let dateString = data[0];
                     let dateTimeParts = dateString.split(' '),
                         timeParts = dateTimeParts[1].split(':'),
