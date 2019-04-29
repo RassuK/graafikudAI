@@ -27,12 +27,11 @@
             localStorage.setItem("date1", input1);
             localStorage.setItem("date2", input2);
         }
+
+        if (localStorage.getItem("date1") !== null && localStorage.getItem("date2") !== null) {
+            $('#saveDate1').val(localStorage.getItem("date1"))
+            $('#saveDate2').val(localStorage.getItem("date2"))
+        }
     </script>
-    <!--  
-    <iframe style="width:100%; height: 500px;" src="tulbad.html" frameborder="3"></iframe>
-    <iframe style="width:100%; height: 500px;" src="tulbad2.html" frameborder="3"></iframe>
-    <iframe style="width:100%; height: 500px;" src="jooned.html" frameborder="3"></iframe>
-    <iframe style="width:100%; height: 500px;" src="karp.html" frameborder="3"></iframe>
-    -->
 </body>
 </html>

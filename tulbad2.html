@@ -14,32 +14,53 @@
 </head>
 <body>
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
-
-<script>
-
-    $(document).ready(function(){
-
-        let timestamps = []
-        let dates = []
-
-        //COPY SEE
-        let datecompare1 = localStorage.getItem("date1")
-        let datecompare2 = localStorage.getItem("date2")
-
-        let filteredlines = []
-        for (let i=0; i<datalines.length; i++){
-            //< moment(1554118557000).format("YYYY-MM-DD")
-            if(moment(datecompare1).format("YYYY-MM-DD") < moment(datalines[i][0]).format("YYYY-MM-DD") && moment(datalines[i][0]).format("YYYY-MM-DD") < moment(datecompare2).format("YYYY-MM-DD")){
-                filteredlines.push(datalines[i])
-            }else{
-
-            }
+<div class="commentbox">
+        <textarea name="tulbad2comment" id="tulbad2comment" cols="30" rows="10"></textarea>
+        <input type="button" id="savecomment" value="Salvesta">
+    </div>
+    
+    <script>
+        let savename = ""
+    
+        if (localStorage.getItem("date1") !== null && localStorage.getItem("date2") !== null) {
+            savename = localStorage.getItem("date1") + "," + localStorage.getItem("date2") + $('textarea').attr('name')
+        } else {
+            savename = $('textarea').attr('name')
         }
-        console.log(filteredlines)
-        datalines = filteredlines;
-        //COPY SEE
-
+        $('#savecomment').click(() => {
+            localStorage.setItem(savename,$('textarea').val())
+        })
+    
+        if (localStorage.getItem(savename) !== null) {
+            $('textarea').val(localStorage.getItem(savename))
+        }
+    
+        $(document).ready(function(){
+    
+            let timestamps = []
+            let dates = []
+    
+    
+            //COPY SEE
+            let datecompare1 = localStorage.getItem("date1")
+            let datecompare2 = localStorage.getItem("date2")
+            
+    
+            let filteredlines = []
+            if (datecompare1 !== null && datecompare2 !== null) {
+                for (let i=0; i<datalines.length; i++){
+                    //< moment(1554118557000).format("YYYY-MM-DD")
+                    if(moment(datecompare1).format("YYYY-MM-DD") < moment(datalines[i][0]).format("YYYY-MM-DD") && moment(datalines[i][0]).format("YYYY-MM-DD") < moment(datecompare2).format("YYYY-MM-DD")){
+                        filteredlines.push(datalines[i])
+                    }else{
+        
+                    }
+                }
+                
+                console.log(filteredlines)
+                datalines = filteredlines;
+            }
+            //COPY SEE
         for(let i=0; i<datalines.length; i++){
             timestamps.push(datalines[i][0])
             let date = moment(datalines[i][0]).format('DD-MM-YYYY');
