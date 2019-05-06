@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
 </head>
+
 <body>
     <!--
 
@@ -23,104 +25,137 @@
     -->
     <div id="container"></div><br>
     <div class="commentbox">
-            <textarea name="sektorcomment" id="sektorcomment" cols="30" rows="10"></textarea>
-            <input type="button" id="savecomment" value="Salvesta">
+        <textarea name="sektorcomment" id="sektorcomment" cols="30" rows="10"></textarea>
+        <input type="button" id="savecomment" value="Salvesta">
+        <div id="comments"></div>
     </div>
-    <script>    
-    let savename = ""
-
-if (localStorage.getItem("date1") !== null && localStorage.getItem("date2") !== null) {
-    savename = localStorage.getItem("date1") + "," + localStorage.getItem("date2") + $('textarea').attr('name')
-} else {
-    savename = $('textarea').attr('name')
-}
-$('#savecomment').click(() => {
-    localStorage.setItem(savename,$('textarea').val())
-})
-
-if (localStorage.getItem(savename) !== null) {
-    $('textarea').val(localStorage.getItem(savename))
-}
-
-$(document).ready(function(){
-
-    initRequest().then(data => {
-            let datalines = data
-    //COPY SEE
-    let datecompare1 = localStorage.getItem("date1")
-    let datecompare2 = localStorage.getItem("date2")
-    
-
-    let filteredlines = []
-    if (datecompare1 !== null && datecompare2 !== null) {
-        for (let i=0; i<datalines.length; i++){
-            //< moment(1554118557000).format("YYYY-MM-DD")
-            if(moment(datecompare1).format("YYYY-MM-DD") <= moment(datalines[i][0]).format("YYYY-MM-DD") && moment(datalines[i][0]).format("YYYY-MM-DD") <= moment(datecompare2).format("YYYY-MM-DD")){
-                console.log(datalines[i])                
-                filteredlines.push(datalines[i])
-            }else{
-
-            }
-        }
-        
-        console.log(filteredlines)
-        datalines = filteredlines;
-    }
-
-    let maleCount = 0
-    let femaleCount = 0
-    for (let index = 0; index < datalines.length; index++) {
-        if (datalines[index][3] == "Male") {
-            maleCount++
-        } else {
-            femaleCount++
-        }
-    }
-
-    const malePercent = maleCount / datalines.length
-    const femalePercent = femaleCount / datalines.length
-
-    Highcharts.chart('container', {
-    chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-    },
-    title: {
-        text: 'Percentage of male and female'
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                style: {
-                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+    <script>
+        //COMMENT LOGIC
+        function findLocalItems(query) {
+            var i, results = [];
+            for (i in localStorage) {
+                if (localStorage.hasOwnProperty(i)) {
+                    if (i.match(query) || (!query && typeof i === 'string')) {
+                        value = localStorage.getItem(i);
+                        results.push({ key: i, val: value });
+                    }
                 }
             }
+            return results;
         }
-    },
-    series: [{
-        name: '',
-        colorByPoint: true,
-        data: [{
-            name: 'Male',
-            y: malePercent
-        }, {
-            name: 'Female',
-            y: femalePercent
-        }]
-    }]
-});
-})
-        
-    });
+
+        let comments = findLocalItems(localStorage.getItem("date1") + "," + localStorage.getItem("date2"))
+
+        for (i = 0; i < comments.length; i++) {
+            var para = document.createElement("P");
+            para.innerHTML = comments[i].val;
+            document.getElementById("comments").appendChild(para);
+        }
+
+
+        let savename = ""
+
+        if (localStorage.getItem("date1") !== null && localStorage.getItem("date2") !== null) {
+            savename = localStorage.getItem("date1") + "," + localStorage.getItem("date2") + $('textarea').attr('name')
+        } else {
+            savename = $('textarea').attr('name')
+        }
+
+        savename = savename + Math.floor(Date.now())
+
+        $('#savecomment').click(() => {
+            localStorage.setItem(savename, $('textarea').val())
+
+            var para = document.createElement("P");
+            para.innerHTML = $('textarea').val();
+            document.getElementById("comments").appendChild(para);
+        })
+
+        if (localStorage.getItem(savename) !== null) {
+            $('textarea').val(localStorage.getItem(savename))
+        }
+        //COMMENT LOGIC
+
+        $(document).ready(function () {
+
+            initRequest().then(data => {
+                let datalines = data
+                //COPY SEE
+                let datecompare1 = localStorage.getItem("date1")
+                let datecompare2 = localStorage.getItem("date2")
+
+
+                let filteredlines = []
+                if (datecompare1 !== null && datecompare2 !== null) {
+                    for (let i = 0; i < datalines.length; i++) {
+                        //< moment(1554118557000).format("YYYY-MM-DD")
+                        if (moment(datecompare1).format("YYYY-MM-DD") <= moment(datalines[i][0]).format("YYYY-MM-DD") && moment(datalines[i][0]).format("YYYY-MM-DD") <= moment(datecompare2).format("YYYY-MM-DD")) {
+                            console.log(datalines[i])
+                            filteredlines.push(datalines[i])
+                        } else {
+
+                        }
+                    }
+
+                    console.log(filteredlines)
+                    datalines = filteredlines;
+                }
+
+                let maleCount = 0
+                let femaleCount = 0
+                for (let index = 0; index < datalines.length; index++) {
+                    if (datalines[index][3] == "Male") {
+                        maleCount++
+                    } else {
+                        femaleCount++
+                    }
+                }
+
+                const malePercent = maleCount / datalines.length
+                const femalePercent = femaleCount / datalines.length
+
+                Highcharts.chart('container', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Percentage of male and female'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '',
+                        colorByPoint: true,
+                        data: [{
+                            name: 'Male',
+                            y: malePercent
+                        }, {
+                            name: 'Female',
+                            y: femalePercent
+                        }]
+                    }]
+                });
+            })
+
+        });
     </script>
 </body>
+
 </html>
