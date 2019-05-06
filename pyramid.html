@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tulbad</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div class="commentbox">
+    <textarea name="tulbadcomment" id="tulbadcomment" cols="30" rows="10"></textarea>
+    <input type="button" id="savecomment" value="Salvesta">
+</div>
+
+<script>
+    let savename = ""
+
+    if (localStorage.getItem("date1") !== null && localStorage.getItem("date2") !== null) {
+        savename = localStorage.getItem("date1") + "," + localStorage.getItem("date2") + $('textarea').attr('name')
+    } else {
+        savename = $('textarea').attr('name')
+    }
+    $('#savecomment').click(() => {
+        localStorage.setItem(savename,$('textarea').val())
+    })
+
+    if (localStorage.getItem(savename) !== null) {
+        $('textarea').val(localStorage.getItem(savename))
+    }
+
+    $(document).ready(function() {
+
+
+        //COPY SEE
+        let datecompare1 = localStorage.getItem("date1")
+        let datecompare2 = localStorage.getItem("date2")
+
+
+        let filteredlines = []
+        if (datecompare1 !== null && datecompare2 !== null) {
+            for (let i = 0; i < datalines.length; i++) {
+                //< moment(1554118557000).format("YYYY-MM-DD")
+                if (moment(datecompare1).format("YYYY-MM-DD") < moment(datalines[i][0]).format("YYYY-MM-DD") && moment(datalines[i][0]).format("YYYY-MM-DD") < moment(datecompare2).format("YYYY-MM-DD")) {
+                    filteredlines.push(datalines[i])
+                } else {
+
+                }
+            }
+            datalines = filteredlines;
+        }
+        //COPY SEE
+
+
+        let m0002 = 0;
+        let n0002 = 0;
+        let m0406 = 0;
+        let n0406 = 0;
+        let m0812 = 0;
+        let n0812 = 0;
+        let m1520 = 0;
+        let n1520 = 0;
+        let m2532 = 0;
+        let n2532 = 0;
+        let m3842 = 0;
+        let n3842 = 0;
+        let m4853 = 0;
+        let n4853 = 0;
+        let m60100 = 0;
+        let n60100 = 0;
+
+        for (i = 0; i < datalines.length; i++) {
+
+            if (datalines[i][1] === "(0,2)") {
+                if(datalines[i][3] === "Male"){
+                    m0002++;
+                }else{
+                    n0002++;
+                }
+            }
+
+            if (datalines[i][1] === "(4,6)") {
+                if(datalines[i][3] === "Male"){
+                    m0406++;
+                }else{
+                    n0406++;
+                }
+            }
+
+            if (datalines[i][1] === "(8,12)") {
+                if(datalines[i][3] === "Male"){
+                    m0812++;
+                }else{
+                    n0812++;
+                }
+            }
+            if (datalines[i][1] === "(15,20)") {
+                if(datalines[i][3] === "Male"){
+                    m1520++;
+                }else{
+                    n1520++;
+                }
+            }
+            if (datalines[i][1] === "(25,32)") {
+                if(datalines[i][3] === "Male"){
+                    m2532++;
+                }else{
+                    n2532++;
+                }
+            }
+            if (datalines[i][1] === "(38,42)") {
+                if(datalines[i][3] === "Male"){
+                    m3842++;
+                }else{
+                    n3842++;
+                }
+            }
+            if (datalines[i][1] === "(48,53)") {
+                if(datalines[i][3] === "Male"){
+                    m4853++;
+                }else{
+                    n4853++;
+                }
+            }
+            if (datalines[i][1] === "(60,100)") {
+                if(datalines[i][3] === "Male"){
+                    m60100++;
+                }else{
+                    n60100++;
+                }
+            }
+
+            let categories = [
+                '0-2', '4-6', '8-12', '15-20',
+                '25-32', '38-42', '48-53', '60-100'
+            ];
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Age/Gender Pyramid'
+                },
+                subtitle: {
+                    text: 'Gender related to age'
+                },
+                xAxis: [{
+                    categories: categories,
+                    reversed: false,
+                    labels: {
+                        step: 1
+                    }
+                }, { // mirror axis on right side
+                    opposite: true,
+                    reversed: false,
+                    categories: categories,
+                    linkedTo: 0,
+                    labels: {
+                        step: 1
+                    }
+                }],
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value;
+                        }
+                    }
+                },
+
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+
+                series: [{
+                    name: 'Male',
+                    data: [
+                        0-m0002, 0-m0406, 0-m0812, 0-m1520, 0-m2532, 0-m3842, 0-m4853, 0-m60100
+                    ]
+                }, {
+                    name: 'Female',
+                    data: [
+                        n0002, n0406, n0812, n1520, n2532, n3842, n4853, n60100
+                    ]
+                }]
+            });
+
+
+        }
+    })
+
+
+
+
+
+
+</script>
+</body>
+</html>
