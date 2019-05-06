@@ -59,6 +59,8 @@
     }
 
     $(document).ready(function(){
+        initRequest().then(data => {
+            let datalines = data
 
 
         //COPY SEE
@@ -183,6 +185,8 @@
         }]
 
         });
+
+        })
     })
     
     </script>

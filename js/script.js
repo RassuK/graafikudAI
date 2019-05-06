@@ -4,14 +4,22 @@ Highcharts.setOptions({
         }
 });
 
-let datalines = null;
+//let datalines = null;
 
-    $.ajax({
-        type: "GET",
-        url: "stats.csv",
-        dataType: "text",
-        success: function(data) {datalines = processData(data);}
-    });
+function initRequest() {
+    return new Promise(resolve => {
+        $.ajax({
+            type: "GET",
+            url: "stats.csv",
+            dataType: "text",
+            success: function(data) {
+                resolve(processData(data))
+            }
+        });
+
+    })
+
+}
 
 
 function processData(allText) {

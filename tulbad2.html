@@ -7,10 +7,10 @@
     <title>Columns</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="js/moment.js"></script>
     <script src="js/script.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
 </head>
 <body>
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -37,6 +37,9 @@
     
         $(document).ready(function(){
     
+        initRequest().then(data => {
+            let datalines = data
+
             let timestamps = []
             let dates = []
     
@@ -245,6 +248,7 @@
                     data: results60100
                 }]
         });
+    })
     });
 
 
