@@ -60,7 +60,7 @@
             return results;
         }
 
-        let comments = findLocalItems(localStorage.getItem("date1") + "," + localStorage.getItem("date2"))
+        let comments = findLocalItems(localStorage.getItem("date1") + "," + localStorage.getItem("date2") + $('textarea').attr('name'))
 
         for (i = 0; i < comments.length; i++) {
             var para = document.createElement("P");

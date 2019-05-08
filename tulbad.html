@@ -24,49 +24,49 @@
 
     <script>
             //COMMENT LOGIC
-            function findLocalItems(query) {
-                var i, results = [];
-                for (i in localStorage) {
-                    if (localStorage.hasOwnProperty(i)) {
-                        if (i.match(query) || (!query && typeof i === 'string')) {
-                            value = localStorage.getItem(i);
-                            results.push({ key: i, val: value });
-                        }
+        function findLocalItems(query) {
+            var i, results = [];
+            for (i in localStorage) {
+                if (localStorage.hasOwnProperty(i)) {
+                    if (i.match(query) || (!query && typeof i === 'string')) {
+                        value = localStorage.getItem(i);
+                        results.push({ key: i, val: value });
                     }
                 }
-                return results;
             }
+            return results;
+        }
 
-            let comments = findLocalItems(localStorage.getItem("date1") + "," + localStorage.getItem("date2"))
+        let comments = findLocalItems(localStorage.getItem("date1") + "," + localStorage.getItem("date2") + $('textarea').attr('name'))
 
-            for (i = 0; i < comments.length; i++) {
-                var para = document.createElement("P");
-                para.innerHTML = comments[i].val;
-                document.getElementById("comments").appendChild(para);
-            }
+        for (i = 0; i < comments.length; i++) {
+            var para = document.createElement("P");
+            para.innerHTML = comments[i].val;
+            document.getElementById("comments").appendChild(para);
+        }
 
 
-            let savename = ""
+        let savename = ""
 
-            if (localStorage.getItem("date1") !== null && localStorage.getItem("date2") !== null) {
-                savename = localStorage.getItem("date1") + "," + localStorage.getItem("date2") + $('textarea').attr('name')
-            } else {
-                savename = $('textarea').attr('name')
-            }
+        if (localStorage.getItem("date1") !== null && localStorage.getItem("date2") !== null) {
+            savename = localStorage.getItem("date1") + "," + localStorage.getItem("date2") + $('textarea').attr('name')
+        } else {
+            savename = $('textarea').attr('name')
+        }
 
-            savename = savename + Math.floor(Date.now())
+        savename = savename + Math.floor(Date.now())
 
-            $('#savecomment').click(() => {
-                localStorage.setItem(savename, $('textarea').val())
+        $('#savecomment').click(() => {
+            localStorage.setItem(savename, $('textarea').val())
 
-                var para = document.createElement("P");
-                para.innerHTML = $('textarea').val();
-                document.getElementById("comments").appendChild(para);
-            })
+            var para = document.createElement("P");
+            para.innerHTML = $('textarea').val();
+            document.getElementById("comments").appendChild(para);
+        })
 
-            if (localStorage.getItem(savename) !== null) {
-                $('textarea').val(localStorage.getItem(savename))
-            }
+        if (localStorage.getItem(savename) !== null) {
+            $('textarea').val(localStorage.getItem(savename))
+        }
         //COMMENT LOGIC
 
         $(document).ready(function () {
