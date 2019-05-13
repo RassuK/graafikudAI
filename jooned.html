@@ -54,10 +54,8 @@
             savename = $('textarea').attr('name')
         }
 
-        savename = savename + Math.floor(Date.now())
-
         $('#savecomment').click(() => {
-            localStorage.setItem(savename, $('textarea').val())
+            localStorage.setItem(savename + Math.floor(Date.now()), $('textarea').val())
 
             var para = document.createElement("P");
             para.innerHTML = $('textarea').val();
